@@ -24,9 +24,27 @@
           <br><a href="{% url 'birthday:detail' birthday.id %}" class="btn btn-primary btn-sm mt-2">Сколько до дня рождения?</a>
         </div>
         <div>
+          {% spaceless %}
+            {% for tag in birthday.tags.all %}
+              {% if forloop.first %}
+                <span>{{ tag.tag|title }}</span>
+              {% else %}
+                <span>{{ tag.tag|lower }}</span>
+              {% endif %}
+              {% if not forloop.last %}
+                <span>, </span>
+              {% else %}
+                пользователя {{ birthday.author.username }}
+              {% endif %}
+            {% endfor %}
+          {% endspaceless %}
+        </div>
+        {% if birthday.author == user %}
+        <div>
           <a href="{% url 'birthday:edit' birthday.id %}" class="btn btn-primary btn-sm mt-2">Изменить запись</a>
           <a href="{% url 'birthday:delete' birthday.id %}" class="btn btn-primary btn-sm mt-2">Удалить запись</a>
         </div>
+        {% endif %}
       </div>
       {% if not forloop.last %}
         <hr class="w-100 mt-3">
